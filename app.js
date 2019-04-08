@@ -4,20 +4,53 @@ var imageView = document.getElementById('image-selection');
 console.log(imageView);
 var images = [];
 var clickTries = 25;
-var imagesPrev = [];
-var imagesPrevPrev = [];
+// var imagesPrev = [];
 
 function randomImage(){
-  var randNum = Math.floor(Math.random() * (images.length - 0 + 1));
+  var mythree = [];
+  var numEq = false;
+  var randNum = Math.floor(Math.random() * (19 - 0 + 1));
+  mythree.push(randNum);
+  while(mythree.length < 3){
+    randNum = Math.floor(Math.random() * (19 - 0 + 1));
+    for(let i = 0; i < mythree.length; i++){
+      if(mythree[i] === randNum){
+        console.log(mythree[i] + ' equals ' + randNum);
+        numEq = true;
+        break;
+      }
+    }
+    if(!numEq){
+      mythree.push(randNum);
+    }
+  }
 
-  console.log(randNum);
-  return randNum;
+
+  console.log(mythree);
+  return mythree;
 }
 
-function showImagesOnView(){
-  var random = randomImage();
-  images[random].render();
+// function checkFromPrev(curr){
+//     for(){
 
+//     }
+// }
+
+function showImagesOnView(){
+
+  var threeImages = randomImage();
+  //   imagesPrev.push(random);
+
+  for(let i = 0; i < 3; i++){
+    images[threeImages[i]].render();
+  }
+
+
+  clickTries--;
+  console.log('Number of clicks left: ' + clickTries);
+  if(clickTries < 0){
+    imageView.removeEventListener('click',showImagesOnView);
+  }
 }
 
 //////IMAGES CONSTRUCTOR FUNCTION////////
@@ -55,13 +88,14 @@ new Image('pen.jpg','pen',0,0);
 new Image('pet-sweep.jpg','pet-sweep',0,0);
 new Image('scissors.jpg','scissors',0,0);
 new Image('shark.jpg','shark',0,0);
-new Image('sweep.jpg','sweep',0,0);
+new Image('sweep.png','sweep',0,0);
 new Image('tauntaun.jpg','tauntaun',0,0);
 new Image('unicorn.jpg','unicorn',0,0);
-new Image('usb.jpg','usb',0,0);
+new Image('usb.gif','usb',0,0);
 new Image('water-can.jpg','water-can',0,0);
 new Image('wine-glass.jpg','wine-glass',0,0);
 
 console.log('Length of Images Array: ' + images.length);
-randomImage();
 showImagesOnView();
+
+imageView.addEventListener('click',showImagesOnView);
