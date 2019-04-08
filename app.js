@@ -4,7 +4,7 @@ var imageView = document.getElementById('image-selection');
 console.log(imageView);
 var images = [];
 var clickTries = 25;
-// var imagesPrev = [];
+var imagesPrev;
 
 function randomImage(){
   var mythree = [];
@@ -31,16 +31,33 @@ function randomImage(){
   return mythree;
 }
 
-// function checkFromPrev(curr){
-//     for(){
+function checkFromPrev(currImages){
+  for(let i = 0;i < currImages.length; i++){
+    if(clickTries === 25){
+      break;
+    }
+    if(currImages[i] === imagesPrev[0] ||
+            currImages[i] === imagesPrev[1] ||
+            currImages[i] === imagesPrev[2]){
+      return false;
+    }
+  }
 
-//     }
-// }
+  return true;//they are unique from previous
+}
 
 function showImagesOnView(){
 
   var threeImages = randomImage();
-  //   imagesPrev.push(random);
+  console.table(threeImages);
+
+  while(!checkFromPrev(threeImages)){
+    threeImages = randomImage();
+  }
+
+
+  imagesPrev = threeImages;
+  console.table(imagesPrev);
 
   for(let i = 0; i < 3; i++){
     images[threeImages[i]].render();
