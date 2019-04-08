@@ -48,6 +48,9 @@ function checkFromPrev(currImages){
 
 function showImagesOnView(){
 
+  //clearing set of images
+  imageView.innerHTML = '';
+
   var threeImages = randomImage();
   console.table(threeImages);
 
