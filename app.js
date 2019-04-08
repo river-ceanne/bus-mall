@@ -23,6 +23,7 @@ function randomImage(){
     if(!numEq){
       mythree.push(randNum);
     }
+    numEq = false;
   }
 
 
