@@ -39,6 +39,8 @@ function checkFromPrev(currImages){
     if(clickTries === 25){
       break;
     }
+
+    //we can use imagesPrev.includes(x) or imagesPrev.indexOf(x)
     if(currImages[i] === imagesPrev[0] ||
             currImages[i] === imagesPrev[1] ||
             currImages[i] === imagesPrev[2]){
