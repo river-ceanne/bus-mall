@@ -1,6 +1,7 @@
 'use strict';
 
 var imageView = document.getElementById('image-selection');
+var scores = document.getElementById('scores');
 console.log(imageView);
 var images = [];
 var clickTries = 25;
@@ -101,9 +102,24 @@ function clickedImage(e){
   if(clickTries <= 0){
     imageView.removeEventListener('click',clickedImage);
     console.log('clickTries: ' + clickTries + ' - removedEventListener');
+    displayScores();
 
   }
 
+}
+/////////////////////////////////////////////////
+function displayScores(){
+
+  var h2El = document.createElement('h2');
+  h2El.textContent = 'Clicked Images Stats';
+  scores.appendChild(h2El);
+
+  for(let i = 0; i < images.length; i++){
+    var liEl = document.createElement('li');
+    liEl.textContent = images[i].id + ' image has ' + images[i].clicks +
+        ' click(s) out of ' + images[i].views + ' view(s).';
+    scores.appendChild(liEl);
+  }
 }
 
 //////IMG CONSTRUCTOR FUNCTION////////

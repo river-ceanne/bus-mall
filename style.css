@@ -33,3 +33,15 @@ section img {
     border-radius: 30px;
 }
 
+section img:hover {
+    background-color: black;
+}
+
+ul {
+    padding: 20px;
+}
+
+ul li {
+    margin-left: 480px;
+    padding-bottom: 10px;
+}
