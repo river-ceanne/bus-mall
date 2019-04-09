@@ -5,7 +5,9 @@ console.log(imageView);
 var images = [];
 var clickTries = 25;
 var imagesPrev;
-
+//********************************************** */
+///////////////FUNCTIONS/////////////////////////
+/////////////////////////////////////////////////
 function randomImage(){
   var mythree = [];
   var numEq = false;
@@ -30,7 +32,7 @@ function randomImage(){
   console.log(mythree);
   return mythree;
 }
-
+/////////////////////////////////////////////////
 function checkFromPrev(currImages){
   for(let i = 0;i < currImages.length; i++){
     if(clickTries === 25){
@@ -45,7 +47,22 @@ function checkFromPrev(currImages){
 
   return true;//they are unique from previous
 }
+/////////////////////////////////////////////////
+function addClicksOnImage(id){
+  var found = false;
+  var i = 0;
+  while(!found){
+    if(id === images[i].id){
+      images[i].clicks++;
+      console.log(images[i].id + ' : ' + images[i].clicks + ' clicks.');
+      found = true;
+    }
+    i++;
+  }
+}
 
+
+/////////////////////////////////////////////////
 function showImagesOnView(){
 
   //clearing set of images
@@ -69,27 +86,29 @@ function showImagesOnView(){
   }
 
 }
-
+/////////////////////////////////////////////////
 function clickedImage(e){
 
   showImagesOnView();
 
   console.log(e.target.id);
-
+  if(e.target.id !== null){
+    addClicksOnImage(e.target.id);
+  }
 
   clickTries--;
   console.log('Number of clicks left: ' + clickTries);
-  if(clickTries < 0){
+  if(clickTries <= 0){
     imageView.removeEventListener('click',clickedImage);
     console.log('clickTries: ' + clickTries + ' - removedEventListener');
-    
+
   }
 
 }
 
-//////IMAGES CONSTRUCTOR FUNCTION////////
+//////IMG CONSTRUCTOR FUNCTION////////
 
-function Image(filepath,id,views,clicks){
+function Img(filepath,id,views,clicks){
   this.filepath = 'img/' + filepath;
   console.log(this.filepath);
   this.id = id;
@@ -98,7 +117,7 @@ function Image(filepath,id,views,clicks){
   images.push(this);
 }
 
-Image.prototype.render = function(){
+Img.prototype.render = function(){
   var imgEl = document.createElement('img');
   imgEl.id = this.id;
   imgEl.height = 300;
@@ -110,26 +129,26 @@ Image.prototype.render = function(){
 
 //////MAIN CALLS//////////
 
-new Image('bag.jpg','bag',0,0);
-new Image('banana.jpg','banana',0,0);
-new Image('bathroom.jpg','bathroom',0,0);
-new Image('boots.jpg','boots',0,0);
-new Image('breakfast.jpg','breakfast',0,0);
-new Image('bubblegum.jpg','bubblegum',0,0);
-new Image('chair.jpg','chair',0,0);
-new Image('cthulhu.jpg','cthulhu',0,0);
-new Image('dog-duck.jpg','dog-duck',0,0);
-new Image('dragon.jpg','dragon',0,0);
-new Image('pen.jpg','pen',0,0);
-new Image('pet-sweep.jpg','pet-sweep',0,0);
-new Image('scissors.jpg','scissors',0,0);
-new Image('shark.jpg','shark',0,0);
-new Image('sweep.png','sweep',0,0);
-new Image('tauntaun.jpg','tauntaun',0,0);
-new Image('unicorn.jpg','unicorn',0,0);
-new Image('usb.gif','usb',0,0);
-new Image('water-can.jpg','water-can',0,0);
-new Image('wine-glass.jpg','wine-glass',0,0);
+new Img('bag.jpg','bag',0,0);
+new Img('banana.jpg','banana',0,0);
+new Img('bathroom.jpg','bathroom',0,0);
+new Img('boots.jpg','boots',0,0);
+new Img('breakfast.jpg','breakfast',0,0);
+new Img('bubblegum.jpg','bubblegum',0,0);
+new Img('chair.jpg','chair',0,0);
+new Img('cthulhu.jpg','cthulhu',0,0);
+new Img('dog-duck.jpg','dog-duck',0,0);
+new Img('dragon.jpg','dragon',0,0);
+new Img('pen.jpg','pen',0,0);
+new Img('pet-sweep.jpg','pet-sweep',0,0);
+new Img('scissors.jpg','scissors',0,0);
+new Img('shark.jpg','shark',0,0);
+new Img('sweep.png','sweep',0,0);
+new Img('tauntaun.jpg','tauntaun',0,0);
+new Img('unicorn.jpg','unicorn',0,0);
+new Img('usb.gif','usb',0,0);
+new Img('water-can.jpg','water-can',0,0);
+new Img('wine-glass.jpg','wine-glass',0,0);
 
 console.log('Length of Images Array: ' + images.length);
 showImagesOnView();
