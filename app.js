@@ -4,11 +4,12 @@ var imageView = document.getElementById('image-selection');
 var scores = document.getElementById('scores');
 console.log(imageView);
 var images = [];
+var imageLabels = [];
 var clickTries = 25;
 var imagesPrev;
 //********************************************** */
 ///////////////FUNCTIONS/////////////////////////
-/////////////////////////////////////////////////
+///******************************************** */
 function randomImage(){
   var mythree = [];
   var numEq = false;
@@ -64,12 +65,11 @@ function addClicksOnImage(id){
   }
 }
 
-
 /////////////////////////////////////////////////
 function showImagesOnView(){
 
   //clearing set of images
-  imageView.innerHTML = '';
+  //imageView.innerHTML = '';
 
   //generate 3 set of random indexes for images
   var threeImages = randomImage();
@@ -124,6 +124,50 @@ function displayScores(){
   }
 }
 
+/////////////////////////////////////////////////
+// function displayChart(){
+
+
+//   var ctx = document.getElementById('click-stats-chart');
+//   var clickStatsChart = new Chart(ctx, {
+//     type: 'bar',
+//     data: {
+//       labels: imageLabels,
+//       datasets: [{
+//         label: '# of Votes',
+//         data: [12, 19, 3, 5, 2, 3],
+//         backgroundColor: [
+//           'rgba(255, 99, 132, 0.4)',
+//           'rgba(54, 162, 235, 0.4)',
+//           'rgba(255, 206, 86, 0.4)',
+//           'rgba(75, 192, 192, 0.4)',
+//           'rgba(153, 102, 255, 0.4)',
+//           'rgba(255, 159, 64, 0.4)'
+//         ],
+//         borderColor: [
+//           'rgba(255, 99, 132, 1)',
+//           'rgba(54, 162, 235, 1)',
+//           'rgba(255, 206, 86, 1)',
+//           'rgba(75, 192, 192, 1)',
+//           'rgba(153, 102, 255, 1)',
+//           'rgba(255, 159, 64, 1)'
+//         ],
+//         borderWidth: 1
+//       }]
+//     },
+//     options: {
+//       scales: {
+//         yAxes: [{
+//           ticks: {
+//             beginAtZero: true
+//           }
+//         }]
+//       }
+//     }
+//   });
+
+// }
+
 //////IMG CONSTRUCTOR FUNCTION////////
 
 function Img(filepath,id,views,clicks){
@@ -132,6 +176,7 @@ function Img(filepath,id,views,clicks){
   this.id = id;
   this.views = views;
   this.clicks = clicks;
+  imageLabels.push(id);
   images.push(this);
 }
 
