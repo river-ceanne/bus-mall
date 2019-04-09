@@ -51,14 +51,16 @@ function showImagesOnView(){
   //clearing set of images
   imageView.innerHTML = '';
 
+  //generate 3 set of random indexes for images
   var threeImages = randomImage();
   console.table(threeImages);
 
+  //check if image-indexes are same as previous, else generate random again
   while(!checkFromPrev(threeImages)){
     threeImages = randomImage();
   }
 
-
+  //save current random image-index
   imagesPrev = threeImages;
   console.table(imagesPrev);
 
@@ -66,12 +68,23 @@ function showImagesOnView(){
     images[threeImages[i]].render();
   }
 
+}
+
+function clickedImage(e){
+
+  showImagesOnView();
+
+  console.log(e.target.id);
+
 
   clickTries--;
   console.log('Number of clicks left: ' + clickTries);
   if(clickTries < 0){
-    imageView.removeEventListener('click',showImagesOnView);
+    imageView.removeEventListener('click',clickedImage);
+    console.log('clickTries: ' + clickTries + ' - removedEventListener');
+    
   }
+
 }
 
 //////IMAGES CONSTRUCTOR FUNCTION////////
@@ -91,6 +104,8 @@ Image.prototype.render = function(){
   imgEl.height = 300;
   imgEl.src = this.filepath;
   imageView.appendChild(imgEl);
+  this.views++;//this will track render count/views
+  console.log(this.id + ' views are ' + this.views);
 };
 
 //////MAIN CALLS//////////
@@ -119,4 +134,4 @@ new Image('wine-glass.jpg','wine-glass',0,0);
 console.log('Length of Images Array: ' + images.length);
 showImagesOnView();
 
-imageView.addEventListener('click',showImagesOnView);
+imageView.addEventListener('click',clickedImage);
