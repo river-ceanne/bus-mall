@@ -13,6 +13,11 @@ h2 {
     text-align: center;
 }
 
+h3 {
+    font-size: 1.3em;
+    text-align: center;
+}
+
 p {
     text-align: justify;
     width: 500px;
