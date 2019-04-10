@@ -2,11 +2,13 @@
 
 var imageView = document.getElementById('image-selection');
 var scores = document.getElementById('scores');
+var clickRate = [];
 console.log(imageView);
 var images = [];
 var imageLabels = [];
 var clickTries = 25;
 var imagesPrev;
+
 //********************************************** */
 ///////////////FUNCTIONS/////////////////////////
 ///******************************************** */
@@ -40,9 +42,7 @@ function checkFromPrev(currImages){
   for(let i = 0;i < currImages.length; i++){
 
     //we can use imagesPrev.includes(x) or imagesPrev.indexOf(x)
-    if(currImages[i] === imagesPrev[0] ||
-            currImages[i] === imagesPrev[1] ||
-            currImages[i] === imagesPrev[2]){
+    if(imagesPrev.includes(currImages[i])){
       return false;
     }
   }
@@ -55,8 +55,13 @@ function addClicksOnImage(id){
   var i = 0;
   while(!found){
     if(id === images[i].id){
+      console.log('clicks on image: ' + images[i].id + ' before adding 1: ' + images[i].clicks);
       images[i].clicks++;
+      console.log('clicks on image: ' + images[i].id + ' after adding 1: ' + images[i].clicks);
+      clickRate[i] = (images[i].clicks / images[i].views) * 100;
+      console.log('click rate is ' + clickRate[i]);
       console.log(images[i].id + ' : ' + images[i].clicks + ' clicks.');
+      console.log(images[i].id + ' : ' + images[i].views + ' views.');
       found = true;
     }
     i++;
@@ -96,25 +101,25 @@ function showImagesOnView(){
 /////////////////////////////////////////////////
 function clickedImage(e){
 
-
   clickTries--;
   console.log('Number of clicks left: ' + clickTries);
   if(clickTries <= 0){
     imageView.removeEventListener('click',clickedImage);
     console.log('clickTries: ' + clickTries + ' - removedEventListener');
-    displayScores();
+    //displayScores();
     displayChart();
     return;
   }
-
-  showImagesOnView();
 
   console.log(e.target.id);
   if(e.target.id !== null){
     addClicksOnImage(e.target.id);
   }
 
+  showImagesOnView();
+
 }
+
 /////////////////////////////////////////////////
 function displayScores(){
 
@@ -122,7 +127,7 @@ function displayScores(){
   h2El.textContent = 'Clicked Images Stats';
   scores.appendChild(h2El);
 
-  for(let i = 0; i < images.length; i++){
+  for(var i = 0; i < images.length; i++){
     var liEl = document.createElement('li');
     liEl.textContent = images[i].id + ' image has ' + images[i].clicks +
         ' click(s) out of ' + images[i].views + ' view(s).';
@@ -139,25 +144,10 @@ function displayChart(){
     data: {
       labels: imageLabels,
       datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.4)',
-          'rgba(54, 162, 235, 0.4)',
-          'rgba(255, 206, 86, 0.4)',
-          'rgba(75, 192, 192, 0.4)',
-          'rgba(153, 102, 255, 0.4)',
-          'rgba(255, 159, 64, 0.4)'
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)'
-        ],
-        borderWidth: 1
+        label: '% of Clicks on Images',
+        data: clickRate,
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderWidth: 2
       }]
     },
     options: {
@@ -183,6 +173,7 @@ function Img(filepath,id){
   this.clicks = 0;
   imageLabels.push(id);
   images.push(this);
+  clickRate.push(0);
 }
 
 Img.prototype.render = function(){
@@ -195,7 +186,7 @@ Img.prototype.render = function(){
   console.log(this.id + ' views are ' + this.views);
 };
 
-//////MAIN CALLS//////////
+/*********/////MAIN CALLS///////****************/
 
 new Img('bag.jpg','bag');
 new Img('banana.jpg','banana');
