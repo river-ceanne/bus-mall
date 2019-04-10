@@ -103,6 +103,7 @@ function clickedImage(e){
     imageView.removeEventListener('click',clickedImage);
     console.log('clickTries: ' + clickTries + ' - removedEventListener');
     displayScores();
+    displayChart();
     return;
   }
 
@@ -130,57 +131,56 @@ function displayScores(){
 }
 
 /////////////////////////////////////////////////
-// function displayChart(){
+function displayChart(){
 
+  var csc = document.getElementById('click-stats-chart');
+  new Chart(csc, {
+    type: 'bar',
+    data: {
+      labels: imageLabels,
+      datasets: [{
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.4)',
+          'rgba(54, 162, 235, 0.4)',
+          'rgba(255, 206, 86, 0.4)',
+          'rgba(75, 192, 192, 0.4)',
+          'rgba(153, 102, 255, 0.4)',
+          'rgba(255, 159, 64, 0.4)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
 
-//   var ctx = document.getElementById('click-stats-chart');
-//   var clickStatsChart = new Chart(ctx, {
-//     type: 'bar',
-//     data: {
-//       labels: imageLabels,
-//       datasets: [{
-//         label: '# of Votes',
-//         data: [12, 19, 3, 5, 2, 3],
-//         backgroundColor: [
-//           'rgba(255, 99, 132, 0.4)',
-//           'rgba(54, 162, 235, 0.4)',
-//           'rgba(255, 206, 86, 0.4)',
-//           'rgba(75, 192, 192, 0.4)',
-//           'rgba(153, 102, 255, 0.4)',
-//           'rgba(255, 159, 64, 0.4)'
-//         ],
-//         borderColor: [
-//           'rgba(255, 99, 132, 1)',
-//           'rgba(54, 162, 235, 1)',
-//           'rgba(255, 206, 86, 1)',
-//           'rgba(75, 192, 192, 1)',
-//           'rgba(153, 102, 255, 1)',
-//           'rgba(255, 159, 64, 1)'
-//         ],
-//         borderWidth: 1
-//       }]
-//     },
-//     options: {
-//       scales: {
-//         yAxes: [{
-//           ticks: {
-//             beginAtZero: true
-//           }
-//         }]
-//       }
-//     }
-//   });
-
-// }
+}
 
 //////IMG CONSTRUCTOR FUNCTION////////
 
-function Img(filepath,id,views,clicks){
+function Img(filepath,id){
   this.filepath = 'img/' + filepath;
   console.log(this.filepath);
   this.id = id;
-  this.views = views;
-  this.clicks = clicks;
+  this.views = 0;
+  this.clicks = 0;
   imageLabels.push(id);
   images.push(this);
 }
@@ -197,26 +197,26 @@ Img.prototype.render = function(){
 
 //////MAIN CALLS//////////
 
-new Img('bag.jpg','bag',0,0);
-new Img('banana.jpg','banana',0,0);
-new Img('bathroom.jpg','bathroom',0,0);
-new Img('boots.jpg','boots',0,0);
-new Img('breakfast.jpg','breakfast',0,0);
-new Img('bubblegum.jpg','bubblegum',0,0);
-new Img('chair.jpg','chair',0,0);
-new Img('cthulhu.jpg','cthulhu',0,0);
-new Img('dog-duck.jpg','dog-duck',0,0);
-new Img('dragon.jpg','dragon',0,0);
-new Img('pen.jpg','pen',0,0);
-new Img('pet-sweep.jpg','pet-sweep',0,0);
-new Img('scissors.jpg','scissors',0,0);
-new Img('shark.jpg','shark',0,0);
-new Img('sweep.png','sweep',0,0);
-new Img('tauntaun.jpg','tauntaun',0,0);
-new Img('unicorn.jpg','unicorn',0,0);
-new Img('usb.gif','usb',0,0);
-new Img('water-can.jpg','water-can',0,0);
-new Img('wine-glass.jpg','wine-glass',0,0);
+new Img('bag.jpg','bag');
+new Img('banana.jpg','banana');
+new Img('bathroom.jpg','bathroom');
+new Img('boots.jpg','boots');
+new Img('breakfast.jpg','breakfast');
+new Img('bubblegum.jpg','bubblegum');
+new Img('chair.jpg','chair');
+new Img('cthulhu.jpg','cthulhu');
+new Img('dog-duck.jpg','dog-duck');
+new Img('dragon.jpg','dragon');
+new Img('pen.jpg','pen');
+new Img('pet-sweep.jpg','pet-sweep');
+new Img('scissors.jpg','scissors');
+new Img('shark.jpg','shark');
+new Img('sweep.png','sweep');
+new Img('tauntaun.jpg','tauntaun');
+new Img('unicorn.jpg','unicorn');
+new Img('usb.gif','usb');
+new Img('water-can.jpg','water-can');
+new Img('wine-glass.jpg','wine-glass');
 
 console.log('Length of Images Array: ' + images.length);
 showImagesOnView();
