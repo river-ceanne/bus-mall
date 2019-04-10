@@ -36,10 +36,8 @@ function randomImage(){
 }
 /////////////////////////////////////////////////
 function checkFromPrev(currImages){
+  console.log('checkFromPrev() entered');
   for(let i = 0;i < currImages.length; i++){
-    if(clickTries === 25){
-      break;
-    }
 
     //we can use imagesPrev.includes(x) or imagesPrev.indexOf(x)
     if(currImages[i] === imagesPrev[0] ||
@@ -75,14 +73,20 @@ function showImagesOnView(){
   var threeImages = randomImage();
   console.table(threeImages);
 
-  //check if image-indexes are same as previous, else generate random again
-  while(!checkFromPrev(threeImages)){
-    threeImages = randomImage();
-  }
+  if(clickTries >= 25){
+    imagesPrev = threeImages;
+    console.log('set first imagesPrev to initial threeImages');
+  }else {
+    //check if image-indexes are same as previous, else generate random again
+    while(!checkFromPrev(threeImages)){
+      threeImages = randomImage();
+      console.log('image(s) the same as previous, re-shuffling..');
+    }
 
-  //save current random image-index
-  imagesPrev = threeImages;
-  console.table(imagesPrev);
+    //save current random image-index
+    imagesPrev = threeImages;
+    console.table(imagesPrev);
+  }
 
   for(let i = 0; i < 3; i++){
     images[threeImages[i]].render();
@@ -92,12 +96,6 @@ function showImagesOnView(){
 /////////////////////////////////////////////////
 function clickedImage(e){
 
-  showImagesOnView();
-
-  console.log(e.target.id);
-  if(e.target.id !== null){
-    addClicksOnImage(e.target.id);
-  }
 
   clickTries--;
   console.log('Number of clicks left: ' + clickTries);
@@ -105,7 +103,14 @@ function clickedImage(e){
     imageView.removeEventListener('click',clickedImage);
     console.log('clickTries: ' + clickTries + ' - removedEventListener');
     displayScores();
+    return;
+  }
 
+  showImagesOnView();
+
+  console.log(e.target.id);
+  if(e.target.id !== null){
+    addClicksOnImage(e.target.id);
   }
 
 }
