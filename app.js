@@ -61,6 +61,7 @@ function addClicksOnImage(id){
       clickRate[i] = (images[i].clicks / images[i].views) * 100;
       console.log('click rate is ' + clickRate[i]);
       console.log(images[i].id + ' : ' + images[i].clicks + ' clicks.');
+      console.log(images[i].id + ' : ' + images[i].views + ' views.');
       found = true;
     }
     i++;
@@ -105,7 +106,7 @@ function clickedImage(e){
   if(clickTries <= 0){
     imageView.removeEventListener('click',clickedImage);
     console.log('clickTries: ' + clickTries + ' - removedEventListener');
-    displayScores();
+    //displayScores();
     displayChart();
     return;
   }
@@ -126,7 +127,7 @@ function displayScores(){
   h2El.textContent = 'Clicked Images Stats';
   scores.appendChild(h2El);
 
-  for(let i = 0; i < images.length; i++){
+  for(var i = 0; i < images.length; i++){
     var liEl = document.createElement('li');
     liEl.textContent = images[i].id + ' image has ' + images[i].clicks +
         ' click(s) out of ' + images[i].views + ' view(s).';
