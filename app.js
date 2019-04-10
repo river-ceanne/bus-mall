@@ -2,11 +2,13 @@
 
 var imageView = document.getElementById('image-selection');
 var scores = document.getElementById('scores');
+var clickRate = [];
 console.log(imageView);
 var images = [];
 var imageLabels = [];
 var clickTries = 25;
 var imagesPrev;
+
 //********************************************** */
 ///////////////FUNCTIONS/////////////////////////
 ///******************************************** */
@@ -40,9 +42,7 @@ function checkFromPrev(currImages){
   for(let i = 0;i < currImages.length; i++){
 
     //we can use imagesPrev.includes(x) or imagesPrev.indexOf(x)
-    if(currImages[i] === imagesPrev[0] ||
-            currImages[i] === imagesPrev[1] ||
-            currImages[i] === imagesPrev[2]){
+    if(imagesPrev.includes(currImages[i])){
       return false;
     }
   }
@@ -55,7 +55,11 @@ function addClicksOnImage(id){
   var i = 0;
   while(!found){
     if(id === images[i].id){
+      console.log('clicks on image: ' + images[i].id + ' before adding 1: ' + images[i].clicks);
       images[i].clicks++;
+      console.log('clicks on image: ' + images[i].id + ' after adding 1: ' + images[i].clicks);
+      clickRate[i] = (images[i].clicks / images[i].views) * 100;
+      console.log('click rate is ' + clickRate[i]);
       console.log(images[i].id + ' : ' + images[i].clicks + ' clicks.');
       found = true;
     }
@@ -96,7 +100,6 @@ function showImagesOnView(){
 /////////////////////////////////////////////////
 function clickedImage(e){
 
-
   clickTries--;
   console.log('Number of clicks left: ' + clickTries);
   if(clickTries <= 0){
@@ -107,14 +110,15 @@ function clickedImage(e){
     return;
   }
 
-  showImagesOnView();
-
   console.log(e.target.id);
   if(e.target.id !== null){
     addClicksOnImage(e.target.id);
   }
 
+  showImagesOnView();
+
 }
+
 /////////////////////////////////////////////////
 function displayScores(){
 
@@ -139,18 +143,10 @@ function displayChart(){
     data: {
       labels: imageLabels,
       datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.4)',
-          'rgba(54, 162, 235, 0.4)',
-          'rgba(255, 206, 86, 0.4)',
-          'rgba(75, 192, 192, 0.4)',
-          'rgba(153, 102, 255, 0.4)',
-          'rgba(255, 159, 64, 0.4)'
-        ],
-        // borderColor:,
-        borderWidth: 1
+        label: '% of Clicks on Images',
+        data: clickRate,
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderWidth: 2
       }]
     },
     options: {
@@ -176,6 +172,7 @@ function Img(filepath,id){
   this.clicks = 0;
   imageLabels.push(id);
   images.push(this);
+  clickRate.push(0);
 }
 
 Img.prototype.render = function(){
@@ -188,7 +185,7 @@ Img.prototype.render = function(){
   console.log(this.id + ' views are ' + this.views);
 };
 
-//////MAIN CALLS//////////
+/*********/////MAIN CALLS///////****************/
 
 new Img('bag.jpg','bag');
 new Img('banana.jpg','banana');
