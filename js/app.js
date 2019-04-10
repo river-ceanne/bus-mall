@@ -1,8 +1,8 @@
 'use strict';
 
 var imageView = document.getElementById('image-selection');
-var scores = document.getElementById('scores');
 var clickRate = [];
+var clicks = [];
 console.log(imageView);
 var images = [];
 var imageLabels = [];
@@ -57,6 +57,7 @@ function addClicksOnImage(id){
     if(id === images[i].id){
       console.log('clicks on image: ' + images[i].id + ' before adding 1: ' + images[i].clicks);
       images[i].clicks++;
+      clicks[i]++;
       console.log('clicks on image: ' + images[i].id + ' after adding 1: ' + images[i].clicks);
       clickRate[i] = (images[i].clicks / images[i].views) * 100;
       console.log('click rate is ' + clickRate[i]);
@@ -106,8 +107,8 @@ function clickedImage(e){
   if(clickTries <= 0){
     imageView.removeEventListener('click',clickedImage);
     console.log('clickTries: ' + clickTries + ' - removedEventListener');
-    //displayScores();
-    displayChart();
+    displayClicksChart();
+    displayStatChart();
     return;
   }
 
@@ -121,22 +122,7 @@ function clickedImage(e){
 }
 
 /////////////////////////////////////////////////
-function displayScores(){
-
-  var h2El = document.createElement('h2');
-  h2El.textContent = 'Clicked Images Stats';
-  scores.appendChild(h2El);
-
-  for(var i = 0; i < images.length; i++){
-    var liEl = document.createElement('li');
-    liEl.textContent = images[i].id + ' image has ' + images[i].clicks +
-        ' click(s) out of ' + images[i].views + ' view(s).';
-    scores.appendChild(liEl);
-  }
-}
-
-/////////////////////////////////////////////////
-function displayChart(){
+function displayStatChart(){
 
   var csc = document.getElementById('click-stats-chart');
   new Chart(csc, {
@@ -147,6 +133,33 @@ function displayChart(){
         label: '% of Clicks on Images',
         data: clickRate,
         backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+}
+
+/////////////////////////////////////////////////
+function displayClicksChart(){
+
+  var nocc = document.getElementById('number-of-clicks-chart');
+  new Chart(nocc, {
+    type: 'bar',
+    data: {
+      labels: imageLabels,
+      datasets: [{
+        label: '# of Clicks on Images',
+        data: clicks,
+        backgroundColor: '#FFC0CB',
         borderWidth: 2
       }]
     },
@@ -174,6 +187,7 @@ function Img(filepath,id){
   imageLabels.push(id);
   images.push(this);
   clickRate.push(0);
+  clicks.push(0);
 }
 
 Img.prototype.render = function(){
