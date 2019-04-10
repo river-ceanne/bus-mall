@@ -67,7 +67,7 @@ function addClicksOnImage(id){
 function showImagesOnView(){
 
   //clearing set of images
-  //imageView.innerHTML = '';
+  imageView.innerHTML = '';
 
   //generate 3 set of random indexes for images
   var threeImages = randomImage();
