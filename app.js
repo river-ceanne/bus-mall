@@ -4,11 +4,12 @@ var imageView = document.getElementById('image-selection');
 var scores = document.getElementById('scores');
 console.log(imageView);
 var images = [];
+var imageLabels = [];
 var clickTries = 25;
 var imagesPrev;
 //********************************************** */
 ///////////////FUNCTIONS/////////////////////////
-/////////////////////////////////////////////////
+///******************************************** */
 function randomImage(){
   var mythree = [];
   var numEq = false;
@@ -35,10 +36,10 @@ function randomImage(){
 }
 /////////////////////////////////////////////////
 function checkFromPrev(currImages){
+  console.log('checkFromPrev() entered');
   for(let i = 0;i < currImages.length; i++){
-    if(clickTries === 25){
-      break;
-    }
+
+    //we can use imagesPrev.includes(x) or imagesPrev.indexOf(x)
     if(currImages[i] === imagesPrev[0] ||
             currImages[i] === imagesPrev[1] ||
             currImages[i] === imagesPrev[2]){
@@ -62,25 +63,30 @@ function addClicksOnImage(id){
   }
 }
 
-
 /////////////////////////////////////////////////
 function showImagesOnView(){
 
   //clearing set of images
-  imageView.innerHTML = '';
+  //imageView.innerHTML = '';
 
   //generate 3 set of random indexes for images
   var threeImages = randomImage();
   console.table(threeImages);
 
-  //check if image-indexes are same as previous, else generate random again
-  while(!checkFromPrev(threeImages)){
-    threeImages = randomImage();
-  }
+  if(clickTries >= 25){
+    imagesPrev = threeImages;
+    console.log('set first imagesPrev to initial threeImages');
+  }else {
+    //check if image-indexes are same as previous, else generate random again
+    while(!checkFromPrev(threeImages)){
+      threeImages = randomImage();
+      console.log('image(s) the same as previous, re-shuffling..');
+    }
 
-  //save current random image-index
-  imagesPrev = threeImages;
-  console.table(imagesPrev);
+    //save current random image-index
+    imagesPrev = threeImages;
+    console.table(imagesPrev);
+  }
 
   for(let i = 0; i < 3; i++){
     images[threeImages[i]].render();
@@ -90,12 +96,6 @@ function showImagesOnView(){
 /////////////////////////////////////////////////
 function clickedImage(e){
 
-  showImagesOnView();
-
-  console.log(e.target.id);
-  if(e.target.id !== null){
-    addClicksOnImage(e.target.id);
-  }
 
   clickTries--;
   console.log('Number of clicks left: ' + clickTries);
@@ -103,7 +103,14 @@ function clickedImage(e){
     imageView.removeEventListener('click',clickedImage);
     console.log('clickTries: ' + clickTries + ' - removedEventListener');
     displayScores();
+    return;
+  }
 
+  showImagesOnView();
+
+  console.log(e.target.id);
+  if(e.target.id !== null){
+    addClicksOnImage(e.target.id);
   }
 
 }
@@ -122,6 +129,50 @@ function displayScores(){
   }
 }
 
+/////////////////////////////////////////////////
+// function displayChart(){
+
+
+//   var ctx = document.getElementById('click-stats-chart');
+//   var clickStatsChart = new Chart(ctx, {
+//     type: 'bar',
+//     data: {
+//       labels: imageLabels,
+//       datasets: [{
+//         label: '# of Votes',
+//         data: [12, 19, 3, 5, 2, 3],
+//         backgroundColor: [
+//           'rgba(255, 99, 132, 0.4)',
+//           'rgba(54, 162, 235, 0.4)',
+//           'rgba(255, 206, 86, 0.4)',
+//           'rgba(75, 192, 192, 0.4)',
+//           'rgba(153, 102, 255, 0.4)',
+//           'rgba(255, 159, 64, 0.4)'
+//         ],
+//         borderColor: [
+//           'rgba(255, 99, 132, 1)',
+//           'rgba(54, 162, 235, 1)',
+//           'rgba(255, 206, 86, 1)',
+//           'rgba(75, 192, 192, 1)',
+//           'rgba(153, 102, 255, 1)',
+//           'rgba(255, 159, 64, 1)'
+//         ],
+//         borderWidth: 1
+//       }]
+//     },
+//     options: {
+//       scales: {
+//         yAxes: [{
+//           ticks: {
+//             beginAtZero: true
+//           }
+//         }]
+//       }
+//     }
+//   });
+
+// }
+
 //////IMG CONSTRUCTOR FUNCTION////////
 
 function Img(filepath,id,views,clicks){
@@ -130,6 +181,7 @@ function Img(filepath,id,views,clicks){
   this.id = id;
   this.views = views;
   this.clicks = clicks;
+  imageLabels.push(id);
   images.push(this);
 }
 

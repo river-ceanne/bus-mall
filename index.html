@@ -4,6 +4,8 @@
     <title>Page Title</title>
     <link rel="stylesheet" type="text/css" media="screen" href="style.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    </script>
 </head>
 <body>
 
@@ -23,14 +25,16 @@
     
 
     <section id="image-selection">
-        Select an image below:
+        <p>
+            Select an image below:
+        </p>
     </section>
 
     <ul id="scores">
         <h2></h2>
-
     </ul>
 
+    <canvas id="click-stats-chart"></canvas>
 
     <script src="app.js"></script>
 </body>
