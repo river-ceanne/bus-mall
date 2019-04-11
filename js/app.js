@@ -109,12 +109,17 @@ function clickedImage(e){
     console.log('clickTries: ' + clickTries + ' - removedEventListener');
     displayClicksChart();
     displayStatChart();
+    localStorage.setItem('images',JSON.stringify(images));
     return;
   }
 
   console.log(e.target.id);
-  if(e.target.id !== null){
+  if(e.target.id !== null && e.target.id !== imageView.id){
     addClicksOnImage(e.target.id);
+  }else{
+    alert('Click on an image, not borders.');
+    clickTries++;
+    return;
   }
 
   showImagesOnView();
@@ -200,30 +205,53 @@ Img.prototype.render = function(){
   console.log(this.id + ' views are ' + this.views);
 };
 
+////*******JSON Parsing on local storage******////
+function parseJSONLocalStorage(){
+  images = JSON.parse(localStorage.getItem('images'));
+  console.log('parsed images: ' + images);
+  clickRate = JSON.parse(localStorage.getItem('clickRate'));
+  console.log('parsed clickRate: ' + clickRate);
+  clicks = JSON.parse(localStorage.getItem('clicks'));
+  console.log('parsed clicks: ' + clicks);
+  imageLabels = localStorage.getItem('imageLabels');
+  console.log('parsed imageLabels: ' + imageLabels);
+}
+
 /*********/////MAIN CALLS///////****************/
 
-new Img('bag.jpg','bag');
-new Img('banana.jpg','banana');
-new Img('bathroom.jpg','bathroom');
-new Img('boots.jpg','boots');
-new Img('breakfast.jpg','breakfast');
-new Img('bubblegum.jpg','bubblegum');
-new Img('chair.jpg','chair');
-new Img('cthulhu.jpg','cthulhu');
-new Img('dog-duck.jpg','dog-duck');
-new Img('dragon.jpg','dragon');
-new Img('pen.jpg','pen');
-new Img('pet-sweep.jpg','pet-sweep');
-new Img('scissors.jpg','scissors');
-new Img('shark.jpg','shark');
-new Img('sweep.png','sweep');
-new Img('tauntaun.jpg','tauntaun');
-new Img('unicorn.jpg','unicorn');
-new Img('usb.gif','usb');
-new Img('water-can.jpg','water-can');
-new Img('wine-glass.jpg','wine-glass');
+if(localStorage.getItem('images')) {
+  console.log('Storage set with data, will parse and re-populate dataset');
+  parseJSONLocalStorage();
+} else {
+  //population of data objects if no local storage is set
+  console.log('Storage is not set, initializing objects to start . . .');
 
-console.log('Length of Images Array: ' + images.length);
+  new Img('bag.jpg','bag');
+  new Img('banana.jpg','banana');
+  new Img('bathroom.jpg','bathroom');
+  new Img('boots.jpg','boots');
+  new Img('breakfast.jpg','breakfast');
+  new Img('bubblegum.jpg','bubblegum');
+  new Img('chair.jpg','chair');
+  new Img('cthulhu.jpg','cthulhu');
+  new Img('dog-duck.jpg','dog-duck');
+  new Img('dragon.jpg','dragon');
+  new Img('pen.jpg','pen');
+  new Img('pet-sweep.jpg','pet-sweep');
+  new Img('scissors.jpg','scissors');
+  new Img('shark.jpg','shark');
+  new Img('sweep.png','sweep');
+  new Img('tauntaun.jpg','tauntaun');
+  new Img('unicorn.jpg','unicorn');
+  new Img('usb.gif','usb');
+  new Img('water-can.jpg','water-can');
+  new Img('wine-glass.jpg','wine-glass');
+
+  console.log('images initialized');
+}
+
 showImagesOnView();
 
 imageView.addEventListener('click',clickedImage);
+
+console.log('Length of Images Array: ' + images.length);
