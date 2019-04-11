@@ -59,7 +59,7 @@ function addClicksOnImage(id){
       images[i].click++;
       clicks[i]++;
       console.log('clicks on image: ' + images[i].id + ' after adding 1: ' + images[i].click);
-      clickRate[i] = (images[i].click / images[i].views) * 100;
+      clickRate[i] = ((images[i].click / images[i].views) * 100).toFixed(2);
       console.log('click rate is ' + clickRate[i]);
       console.log(images[i].id + ' : ' + images[i].click + ' clicks.');
       console.log(images[i].id + ' : ' + images[i].views + ' views.');
@@ -107,12 +107,11 @@ function clickedImage(e){
   if(clickTries <= 0){
     imageView.removeEventListener('click',clickedImage);
     console.log('clickTries: ' + clickTries + ' - removedEventListener');
-    displayClicksChart();
     displayStatChart();
+    displayClicksChart();
     localStorage.setItem('images',JSON.stringify(images));
     localStorage.setItem('clickRate',JSON.stringify(clickRate));
     localStorage.setItem('clicks',JSON.stringify(clicks));
-    localStorage.setItem('imageLabels',JSON.stringify(imageLabels));
     return;
   }
 
@@ -223,16 +222,14 @@ function parseJSONLocalStorage(){
 
   console.table(images);
 
+  console.log('json clickRate: ' + localStorage.getItem('clickRate'));
   clickRate = JSON.parse(localStorage.getItem('clickRate'));
   console.log('parsed clickRate: ' + clickRate);
 
   clicks = JSON.parse(localStorage.getItem('clicks'));
   console.log('parsed clicks: ' + clicks);
 
-  imageLabels = localStorage.getItem('imageLabels');
-  console.log('parsed imageLabels: ' + imageLabels);
 }
-
 /*********/////MAIN CALLS///////****************/
 
 if(localStorage.getItem('images')) {
