@@ -55,13 +55,13 @@ function addClicksOnImage(id){
   var i = 0;
   while(!found){
     if(id === images[i].id){
-      console.log('clicks on image: ' + images[i].id + ' before adding 1: ' + images[i].clicks);
-      images[i].clicks++;
+      console.log('clicks on image: ' + images[i].id + ' before adding 1: ' + images[i].click);
+      images[i].click++;
       clicks[i]++;
-      console.log('clicks on image: ' + images[i].id + ' after adding 1: ' + images[i].clicks);
-      clickRate[i] = (images[i].clicks / images[i].views) * 100;
+      console.log('clicks on image: ' + images[i].id + ' after adding 1: ' + images[i].click);
+      clickRate[i] = (images[i].click / images[i].views) * 100;
       console.log('click rate is ' + clickRate[i]);
-      console.log(images[i].id + ' : ' + images[i].clicks + ' clicks.');
+      console.log(images[i].id + ' : ' + images[i].click + ' clicks.');
       console.log(images[i].id + ' : ' + images[i].views + ' views.');
       found = true;
     }
@@ -110,6 +110,9 @@ function clickedImage(e){
     displayClicksChart();
     displayStatChart();
     localStorage.setItem('images',JSON.stringify(images));
+    localStorage.setItem('clickRate',JSON.stringify(clickRate));
+    localStorage.setItem('clicks',JSON.stringify(clicks));
+    localStorage.setItem('imageLabels',JSON.stringify(imageLabels));
     return;
   }
 
@@ -183,12 +186,12 @@ function displayClicksChart(){
 
 //////IMG CONSTRUCTOR FUNCTION////////
 
-function Img(filepath,id){
-  this.filepath = 'img/' + filepath;
+function Img(filepath,id,views,click){
+  this.filepath = filepath;
   console.log(this.filepath);
   this.id = id;
-  this.views = 0;
-  this.clicks = 0;
+  this.views = views;
+  this.click = click;
   imageLabels.push(id);
   images.push(this);
   clickRate.push(0);
@@ -207,12 +210,25 @@ Img.prototype.render = function(){
 
 ////*******JSON Parsing on local storage******////
 function parseJSONLocalStorage(){
-  images = JSON.parse(localStorage.getItem('images'));
-  console.log('parsed images: ' + images);
+
+  var storedImages = JSON.parse(localStorage.getItem('images'));
+  console.table(images);
+  images = [];
+  console.log('length of images array: ' + images.length);
+  console.log('storedImages length: ' + storedImages.length);
+
+  for(let i = 0; i < storedImages.length; i++){
+    new Img(storedImages[i].filepath,storedImages[i].id,storedImages[i].views,storedImages[i].click);
+  }
+
+  console.table(images);
+
   clickRate = JSON.parse(localStorage.getItem('clickRate'));
   console.log('parsed clickRate: ' + clickRate);
+
   clicks = JSON.parse(localStorage.getItem('clicks'));
   console.log('parsed clicks: ' + clicks);
+
   imageLabels = localStorage.getItem('imageLabels');
   console.log('parsed imageLabels: ' + imageLabels);
 }
@@ -222,30 +238,31 @@ function parseJSONLocalStorage(){
 if(localStorage.getItem('images')) {
   console.log('Storage set with data, will parse and re-populate dataset');
   parseJSONLocalStorage();
-} else {
+  console.log('... stored data loaded.');
+}else {
   //population of data objects if no local storage is set
   console.log('Storage is not set, initializing objects to start . . .');
 
-  new Img('bag.jpg','bag');
-  new Img('banana.jpg','banana');
-  new Img('bathroom.jpg','bathroom');
-  new Img('boots.jpg','boots');
-  new Img('breakfast.jpg','breakfast');
-  new Img('bubblegum.jpg','bubblegum');
-  new Img('chair.jpg','chair');
-  new Img('cthulhu.jpg','cthulhu');
-  new Img('dog-duck.jpg','dog-duck');
-  new Img('dragon.jpg','dragon');
-  new Img('pen.jpg','pen');
-  new Img('pet-sweep.jpg','pet-sweep');
-  new Img('scissors.jpg','scissors');
-  new Img('shark.jpg','shark');
-  new Img('sweep.png','sweep');
-  new Img('tauntaun.jpg','tauntaun');
-  new Img('unicorn.jpg','unicorn');
-  new Img('usb.gif','usb');
-  new Img('water-can.jpg','water-can');
-  new Img('wine-glass.jpg','wine-glass');
+  new Img('img/bag.jpg','bag',0,0);
+  new Img('img/banana.jpg','banana',0,0);
+  new Img('img/bathroom.jpg','bathroom',0,0);
+  new Img('img/boots.jpg','boots',0,0);
+  new Img('img/breakfast.jpg','breakfast',0,0);
+  new Img('img/bubblegum.jpg','bubblegum',0,0);
+  new Img('img/chair.jpg','chair',0,0);
+  new Img('img/cthulhu.jpg','cthulhu',0,0);
+  new Img('img/dog-duck.jpg','dog-duck',0,0);
+  new Img('img/dragon.jpg','dragon',0,0);
+  new Img('img/pen.jpg','pen',0,0);
+  new Img('img/pet-sweep.jpg','pet-sweep',0,0);
+  new Img('img/scissors.jpg','scissors',0,0);
+  new Img('img/shark.jpg','shark',0,0);
+  new Img('img/sweep.png','sweep',0,0);
+  new Img('img/tauntaun.jpg','tauntaun',0,0);
+  new Img('img/unicorn.jpg','unicorn',0,0);
+  new Img('img/usb.gif','usb',0,0);
+  new Img('img/water-can.jpg','water-can',0,0);
+  new Img('img/wine-glass.jpg','wine-glass',0,0);
 
   console.log('images initialized');
 }
@@ -253,5 +270,3 @@ if(localStorage.getItem('images')) {
 showImagesOnView();
 
 imageView.addEventListener('click',clickedImage);
-
-console.log('Length of Images Array: ' + images.length);
